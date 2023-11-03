@@ -1,2 +1,9 @@
 # Emacs file
 *~
+
+build
+*.db
+
+# Python
+__pycache__
+.venv

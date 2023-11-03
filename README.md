@@ -2,6 +2,8 @@
 
 Convert MediaWiki language name to language code and vice versa.
 
-## Requirements
+## Build dependencies
 
 - php
+
+- wget
