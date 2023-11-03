@@ -1,7 +1,7 @@
 import logging
+import subprocess
 import tarfile
 from pathlib import Path
-from subprocess import run
 
 # project names and tags
 GITHUB_REPO = {
@@ -20,7 +20,7 @@ def download_files() -> None:
             tar_path = download_path / url.rsplit("/", 1)[-1]
             if not tar_path.exists():
                 logging.info(f"Downloading {repo_name} {repo_tag}")
-                run(
+                subprocess.run(
                     ["wget", "-nv", "-P", "build", url],
                     check=True,
                     capture_output=True,

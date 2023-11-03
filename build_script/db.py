@@ -25,7 +25,7 @@ def insert_data(
     lang_code: str,
     lang_name: str,
     code_of_name: str,
-    alt: str | None,
+    alt: str = "",
 ) -> None:
     lang_code = lang_code.replace("_", "-")
     code_of_name = code_of_name.replace("_", "-")

@@ -12,15 +12,18 @@ def extract_cldr(conn: Connection) -> None:
     for xml_path in (cldr_path / "common" / "main").iterdir():
         tree = ET.parse(xml_path)
         root = tree.getroot()
-        code_of_name = root.find("identity/language").get("type")
+        language_node = root.find("identity/language")
+        if language_node is None:
+            continue
+        code_of_name = language_node.get("type", "")
         script_node = root.find("identity/script")
         if script_node is not None:
             code_of_name += "-"
-            code_of_name += script_node.get("type")
+            code_of_name += script_node.get("type", "")
         territory_node = root.find("identity/territory")
         if territory_node is not None:
             code_of_name += "-"
-            code_of_name += territory_node.get("type")
+            code_of_name += territory_node.get("type", "")
 
         for lang_node in root.findall("localeDisplayNames/languages/language"):
             lang_name = lang_node.text
@@ -28,8 +31,8 @@ def extract_cldr(conn: Connection) -> None:
                 continue
             insert_data(
                 conn,
-                lang_node.get("type"),
-                lang_name,
+                lang_node.get("type", ""),
+                lang_name or "",
                 code_of_name,
-                lang_node.get("alt"),
+                lang_node.get("alt", ""),
             )
