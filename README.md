@@ -1,6 +1,6 @@
 # MediaWiki langcodes
 
-Convert MediaWiki language name to language code and vice versa.
+Convert MediaWiki language names and language codes.
 
 ## Build dependencies
 

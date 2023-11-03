@@ -9,7 +9,7 @@ def init_db(db_path: Path) -> sqlite3.Connection:
         """
         CREATE TABLE langcodes (
         lang_code TEXT COLLATE NOCASE,
-        lang_name TEXT,
+        lang_name TEXT COLLATE NOCASE,
         code_of_name TEXT COLLATE NOCASE,
         alt TEXT,
         PRIMARY KEY(lang_code, lang_name, code_of_name, alt));
