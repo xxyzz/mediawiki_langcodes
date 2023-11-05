@@ -6,9 +6,9 @@ from db import insert_data
 
 
 def extract_cldr(conn: Connection) -> None:
-    from download_files import GITHUB_REPO
-
-    cldr_path = Path(f"build/cldr-{GITHUB_REPO['unicode-org/cldr']}")
+    for path in Path("build").glob("cldr-*"):
+        cldr_path = path
+        break
     for xml_path in (cldr_path / "common" / "main").iterdir():
         tree = ET.parse(xml_path)
         root = tree.getroot()

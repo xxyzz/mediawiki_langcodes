@@ -26,21 +26,19 @@ def extract_data_from_php_file(
 
 
 def extract_mediawiki(conn: Connection) -> None:
-    from download_files import GITHUB_REPO
-
     # https://github.com/wikimedia/mediawiki/blob/master/includes/languages/data/Names.php
-    mediawiki_path = Path(f"build/mediawiki-{GITHUB_REPO['wikimedia/mediawiki']}")
+    for path in Path("build").glob("mediawiki-1.*"):
+        mediawiki_path = path
+        break
     php_path = mediawiki_path / "includes" / "languages" / "data" / "Names.php"
     extract_data_from_php_file(conn, php_path, "echo json_encode(Names::$names);", None)
 
 
 def extract_mediawiki_cldr(conn: Connection) -> None:
-    from download_files import GITHUB_REPO
-
-    repo_path = Path(
-        f"build/mediawiki-extensions-cldr-{GITHUB_REPO['wikimedia/mediawiki-extensions-cldr']}"
-    )
     # https://github.com/wikimedia/mediawiki-extensions-cldr/tree/master/LocalNames
+    for path in Path("build").glob("mediawiki-extensions-cldr-*"):
+        repo_path = path
+        break
     for php_path in (repo_path / "LocalNames").iterdir():
         code_for_name = php_path.stem.removeprefix("LocalNames").lower()
         with php_path.open(encoding="utf-8") as f:
