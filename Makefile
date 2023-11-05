@@ -35,3 +35,6 @@ clean:
 	rm -rf build
 	rm $(DB_PATH)
 	rm -rf dist
+
+test:
+	python -m unittest discover -s tests
