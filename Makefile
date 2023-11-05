@@ -34,3 +34,4 @@ build/cldr-$(CLDR_TAG):
 clean:
 	rm -rf build
 	rm $(DB_PATH)
+	rm -rf dist

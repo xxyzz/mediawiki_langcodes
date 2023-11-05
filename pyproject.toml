@@ -44,6 +44,7 @@ mediawiki_langcodes = [
 [tool.mypy]
 check_untyped_defs = true
 strict = true
+exclude = ["build"]
 
 [tool.ruff]
 select = [
