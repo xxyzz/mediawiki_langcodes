@@ -12,8 +12,8 @@ jobs:
       id-token: write
       contents: write
     environment:
-      name: testpypi
-      url: https://test.pypi.org/p/mediawiki_langcodes
+      name: pypi
+      url: https://pypi.org/p/mediawiki_langcodes
     steps:
       - uses: dawidd6/action-download-artifact@v2
         with:
@@ -27,5 +27,3 @@ jobs:
 
       - uses: pypa/gh-action-pypi-publish@release/v1
         if: ${{ startswith(github.ref_name, 'v') }}
-        with:
-          repository-url: https://test.pypi.org/legacy/
