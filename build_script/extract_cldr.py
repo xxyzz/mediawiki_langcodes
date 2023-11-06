@@ -15,15 +15,15 @@ def extract_cldr(conn: Connection) -> None:
         language_node = root.find("identity/language")
         if language_node is None:
             continue
-        code_of_name = language_node.get("type", "")
+        in_lang = language_node.get("type", "")
         script_node = root.find("identity/script")
         if script_node is not None:
-            code_of_name += "-"
-            code_of_name += script_node.get("type", "")
+            in_lang += "-"
+            in_lang += script_node.get("type", "")
         territory_node = root.find("identity/territory")
         if territory_node is not None:
-            code_of_name += "-"
-            code_of_name += territory_node.get("type", "")
+            in_lang += "-"
+            in_lang += territory_node.get("type", "")
 
         for lang_node in root.findall("localeDisplayNames/languages/language"):
             lang_name = lang_node.text
@@ -33,6 +33,6 @@ def extract_cldr(conn: Connection) -> None:
                 conn,
                 lang_node.get("type", ""),
                 lang_name or "",
-                code_of_name,
+                in_lang,
                 lang_node.get("alt", ""),
             )

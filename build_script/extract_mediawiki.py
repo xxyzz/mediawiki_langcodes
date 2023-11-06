@@ -9,7 +9,7 @@ from db import insert_data
 
 
 def extract_data_from_php_file(
-    conn: Connection, php_path: Path, php_code: str, code_of_name: str | None
+    conn: Connection, php_path: Path, php_code: str, in_lang: str | None
 ) -> None:
     with (
         php_path.open(encoding="utf-8") as php_f,
@@ -22,7 +22,7 @@ def extract_data_from_php_file(
         if len(subp.stdout) > 0:
             languages = json.loads(subp.stdout)
             for lang_code, lang_name in languages.items():
-                insert_data(conn, lang_code, lang_name, code_of_name or lang_code)
+                insert_data(conn, lang_code, lang_name, in_lang or lang_code)
 
 
 def extract_mediawiki(conn: Connection) -> None:

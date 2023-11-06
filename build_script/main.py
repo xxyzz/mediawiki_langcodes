@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from add_extra import add_extra_names
-from db import init_db
+from db import create_index, init_db
 from extract_cldr import extract_cldr
 from extract_mediawiki import extract_mediawiki, extract_mediawiki_cldr
 
@@ -13,6 +13,7 @@ def main() -> None:
     extract_mediawiki_cldr(conn)
     extract_mediawiki(conn)
     add_extra_names(conn)
+    create_index(conn)
     conn.commit()
     conn.close()
 
