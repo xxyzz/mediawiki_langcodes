@@ -1,5 +1,7 @@
 import sqlite3
 import sys
+from collections.abc import Iterator
+from typing import Tuple
 
 if sys.version_info < (3, 10):
     from importlib_resources import files
@@ -70,3 +72,20 @@ def name_to_code(lang_name: str, code_of_name: str = "") -> str:
 
     conn.close()
     return lang_code
+
+
+def get_all_names(in_language: str = "") -> Iterator[Tuple[str, str]]:
+    """
+    Return tuple of language code and name.
+    """
+    conn = sqlite3.connect(str(DB_PATH))
+    sql_query = "SELECT DISTINCT lang_code, lang_name FROM langcodes"
+    query_values = []
+    if in_language != "":
+        sql_query += " WHERE code_of_name = ?"
+        query_values.append(in_language)
+    else:
+        sql_query += " WHERE lang_code = code_of_name"
+    for lang_code, lang_name in conn.execute(sql_query, tuple(query_values)):
+        yield lang_code, lang_name
+    conn.close()
