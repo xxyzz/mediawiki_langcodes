@@ -41,4 +41,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           if-no-files-found: error
+          name: dist
           path: dist
