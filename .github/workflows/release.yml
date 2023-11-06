@@ -5,14 +5,12 @@ on:
     tags:
       - 'v*'
 
-permissions:
-  contents: write
-
 jobs:
   create_release:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      contents: write
     environment:
       name: testpypi
       url: https://test.pypi.org/p/mediawiki_langcodes
