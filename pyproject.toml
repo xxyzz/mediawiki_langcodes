@@ -53,3 +53,6 @@ select = [
     "I",  # isort
     "W",  # pycodestyle warning
 ]
+
+[tool.typos]
+type.json.check-file = false

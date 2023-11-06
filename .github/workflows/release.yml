@@ -1,0 +1,33 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/mediawiki_langcodes
+    steps:
+      - uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: test.yml
+          commit: ${{ github.sha }}
+
+      - uses: softprops/action-gh-release@v1
+        with:
+          prerelease: ${{ endsWith(github.ref_name, 'dev') }}
+          files: dist/*
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        if: ${{ startswith(github.ref_name, 'v') }}
+        with:
+          repository-url: https://test.pypi.org/legacy/
