@@ -28,7 +28,7 @@ def add_extra_names(conn: sqlite3.Connection) -> None:
 def lang_code_exists(conn: sqlite3.Connection, lang_code: str, in_lang: str) -> bool:
     for _ in conn.execute(
         """
-        SELECT DISTINCT lang_code
+        SELECT lang_code
         FROM langcodes WHERE lang_code = ? AND in_lang = ? LIMIT 1
         """,
         (lang_code, in_lang),
