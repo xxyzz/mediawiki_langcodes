@@ -56,6 +56,10 @@ if __name__ == "__main__":
             for lang_name in lang_names:
                 if name_to_code(lang_name, args.in_lang) != lang_code:
                     extra_langs[lang_code].append(lang_name)
+
+    for lang_code, lang_names in extra_langs.items():
+        lang_names.sort()
+
     with open(
         f"build_script/extra_names/{args.in_lang}.json", "w", encoding="utf-8"
     ) as f:
