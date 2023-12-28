@@ -820,7 +820,8 @@
     "Alune"
   ],
   "alr": [
-    "Alutor"
+    "Alutor",
+    "Alyutor"
   ],
   "alt": [
     "Altay",
@@ -3419,11 +3420,6 @@
   "bnt-lal": [
     "Lala (South Africa)"
   ],
-  "bnt-lwl": [
-    "Kelwer",
-    "Lwal",
-    "Lwel"
-  ],
   "bnt-mpi": [
     "Mpiin"
   ],
@@ -4795,6 +4791,8 @@
     "Chamacoco"
   ],
   "cel-bry-pro": [
+    "Common Brittonic",
+    "Common Brythonic",
     "Proto-Brittonic",
     "Proto-Brythonic"
   ],
@@ -5171,6 +5169,10 @@
   "cno": [
     "Con"
   ],
+  "cnp": [
+    "Northern Ping",
+    "Northern Pinghua"
+  ],
   "cns": [
     "Central Asmat"
   ],
@@ -5444,6 +5446,10 @@
   ],
   "cso": [
     "Sochiapam Chinantec"
+  ],
+  "csp": [
+    "Southern Ping",
+    "Southern Pinghua"
   ],
   "csq": [
     "Croatian Sign Language"
@@ -8013,6 +8019,10 @@
   "gmw-ecg": [
     "East Central German"
   ],
+  "gmw-fin": [
+    "Fingal",
+    "Fingallian"
+  ],
   "gmw-gts": [
     "Gottscheerisch",
     "Gottscheerish"
@@ -8160,17 +8170,6 @@
   ],
   "gol": [
     "Gola"
-  ],
-  "gon": [
-    "Adilabad Gondi",
-    "Aheri Gondi",
-    "Dorla Gondi",
-    "Koya Gondi",
-    "Maria Gondi",
-    "Muria Gondi",
-    "Northern Gondi",
-    "Raj Gondi",
-    "Southern Gondi"
   ],
   "goo": [
     "Gone Dau"
@@ -8830,6 +8829,10 @@
   ],
   "hke": [
     "Hunde"
+  ],
+  "hkh": [
+    "Pogali",
+    "Poguli"
   ],
   "hkk": [
     "Hunjara-Kaina Ke"
@@ -13630,6 +13633,11 @@
   ],
   "lvk": [
     "Lavukaleve"
+  ],
+  "lvl": [
+    "Kelwer",
+    "Lwal",
+    "Lwel"
   ],
   "lvu": [
     "Levuka"
@@ -19566,6 +19574,11 @@
     "Proto-Kra-Dai",
     "Proto-Tai-Kadai"
   ],
+  "qfa-xgx-rou": [
+    "Rouran",
+    "Ruan-ruan",
+    "Ruanruan"
+  ],
   "qfa-xgx-tuh": [
     "'Azha",
     "Tuyuhun"
@@ -19637,6 +19650,9 @@
     "Quichua",
     "Runa",
     "Runashimi"
+  ],
+  "qwe-pro": [
+    "Proto-Quechuan"
   ],
   "qwm": [
     "Armeno-Kipchak",
@@ -21133,13 +21149,6 @@
   ],
   "sem-has": [
     "Hasaitic"
-  ],
-  "sem-him": [
-    "Himyar",
-    "Himyari",
-    "Himyaric",
-    "Himyarite",
-    "Himyaritic"
   ],
   "sem-his": [
     "Hismaic",
@@ -23989,6 +23998,7 @@
     "Turkana"
   ],
   "tuw-kkl": [
+    "Chinese Kyakala",
     "Kyakala"
   ],
   "tuw-pro": [
@@ -26050,7 +26060,7 @@
     "Garingbal"
   ],
   "xgl": [
-    "Galindan"
+    "Galindian"
   ],
   "xgm": [
     "Darambal",
@@ -26077,11 +26087,6 @@
   ],
   "xgn-pro": [
     "Proto-Mongolic"
-  ],
-  "xgn-rou": [
-    "Rouran",
-    "Ruan-ruan",
-    "Ruanruan"
   ],
   "xgr": [
     "Garza"
@@ -26772,7 +26777,8 @@
   "xto": [
     "Agnean",
     "East Tocharian",
-    "Tocharian A"
+    "Tocharian A",
+    "Turfanian"
   ],
   "xtp": [
     "San Miguel Piedras Mixtec"
@@ -27432,6 +27438,7 @@
     "Yogad"
   ],
   "yol": [
+    "Forth and Bargy",
     "Yola"
   ],
   "yom": [
@@ -27867,6 +27874,9 @@
   "zhw": [
     "Zhoa"
   ],
+  "zhx-lui": [
+    "Leizhou Min"
+  ],
   "zhx-min-pro": [
     "Proto-Min"
   ],
@@ -27955,6 +27965,10 @@
   ],
   "zle-ort": [
     "Old Ruthenian"
+  ],
+  "zlw-mas": [
+    "Masurian",
+    "Mazurian"
   ],
   "zlw-ocs": [
     "Old Czech"
