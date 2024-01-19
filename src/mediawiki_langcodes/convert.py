@@ -63,6 +63,7 @@ def name_to_code(
     """
     conn = sqlite3.connect(str(DB_PATH))
     lang_code = ""
+    lang_name = lang_name.lower()
     search_sql = "SELECT lang_code FROM langcodes WHERE lang_name = ?"
     search_values = [lang_name]
     if in_language != "":

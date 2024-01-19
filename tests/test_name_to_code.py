@@ -12,3 +12,6 @@ class TestNameToCode(TestCase):
 
     def test_zh_extra(self) -> None:
         self.assertEqual(name_to_code("韓語"), "ko")
+
+    def test_non_ascii_lower_case(self) -> None:
+        self.assertEqual(name_to_code("Английский", "ru"), "en")

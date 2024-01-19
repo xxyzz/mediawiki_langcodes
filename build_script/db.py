@@ -44,3 +44,8 @@ def insert_data(
         """,
         (lang_code, lang_name, in_lang, alt),
     )
+    # SQLite NOCASE only converts ASCII letters
+    # https://www.sqlite.org/datatype3.html#collation
+    for (sqlite_lower_name,) in conn.execute("SELECT lower(?)", (lang_name,)):
+        if sqlite_lower_name != lang_name.lower():
+            insert_data(conn, lang_code, lang_name.lower(), in_lang, alt)
