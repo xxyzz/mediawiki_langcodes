@@ -25,7 +25,7 @@ def code_to_name(lang_code: str, in_language: str = "") -> str:
     for (result_name,) in conn.execute(
         """
         SELECT lang_name FROM langcodes
-        WHERE lang_code = ? AND in_lang = ? AND alt == ''
+        WHERE lang_code = ? AND in_lang = ? AND alt IN ('mediawiki', '')
         LIMIT 1
         """,
         (lang_code, in_language),
@@ -36,7 +36,7 @@ def code_to_name(lang_code: str, in_language: str = "") -> str:
         for (result_name,) in conn.execute(
             """
             SELECT lang_name FROM langcodes
-            WHERE lang_code = ? AND in_lang = ? AND alt == ''
+            WHERE lang_code = ? AND in_lang = ? AND alt IN ('mediawiki', '')
             LIMIT 1
             """,
             (lang_code, in_language.split("-", 1)[0]),
@@ -44,7 +44,11 @@ def code_to_name(lang_code: str, in_language: str = "") -> str:
             lang_name = result_name
     if lang_name == "":
         for (result_name,) in conn.execute(
-            "SELECT lang_name FROM langcodes WHERE lang_code = ? AND alt == '' LIMIT 1",
+            """
+            SELECT lang_name FROM langcodes
+            WHERE lang_code = ? AND alt IN ('mediawiki', '')
+            LIMIT 1
+            """,
             (lang_code,),
         ):
             lang_name = result_name
@@ -78,18 +82,23 @@ def name_to_code(
     return lang_code
 
 
-def get_all_names(in_language: str = "") -> Iterator[Tuple[str, str]]:
+def get_all_names(
+    in_language: str = "", only_defined: bool = False
+) -> Iterator[Tuple[str, str]]:
     """
     Return tuple of language code and name.
+    Only return language codes defined in MediaWiki if `only_defined` is `True`.
     """
     conn = sqlite3.connect(str(DB_PATH))
-    sql_query = "SELECT DISTINCT lang_code, lang_name FROM langcodes"
-    query_values = []
-    if in_language != "":
-        sql_query += " WHERE in_lang = ?"
-        query_values.append(in_language)
-    else:
-        sql_query += " WHERE lang_code = in_lang"
-    for lang_code, lang_name in conn.execute(sql_query, tuple(query_values)):
+    sql_query = "SELECT lang_code, lang_name FROM langcodes"
+    if only_defined:
+        sql_query += " WHERE alt = 'mediawiki'"
+    elif in_language == "":
+        sql_query += " WHERE in_lang = lang_code"
+    sql_query += " GROUP BY lang_code"
+
+    for lang_code, lang_name in conn.execute(sql_query):
+        if in_language != "":
+            lang_name = code_to_name(lang_code, in_language)
         yield lang_code, lang_name
     conn.close()

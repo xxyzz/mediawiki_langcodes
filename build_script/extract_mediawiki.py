@@ -9,7 +9,11 @@ from db import insert_data
 
 
 def extract_data_from_php_file(
-    conn: Connection, php_path: Path, php_code: str, in_lang: str | None
+    conn: Connection,
+    php_path: Path,
+    php_code: str,
+    in_lang: str | None,
+    from_mediawiki: bool,
 ) -> None:
     with (
         php_path.open(encoding="utf-8") as php_f,
@@ -22,7 +26,13 @@ def extract_data_from_php_file(
         if len(subp.stdout) > 0:
             languages = json.loads(subp.stdout)
             for lang_code, lang_name in languages.items():
-                insert_data(conn, lang_code, lang_name, in_lang or lang_code)
+                insert_data(
+                    conn,
+                    lang_code,
+                    lang_name,
+                    in_lang or lang_code,
+                    "mediawiki" if from_mediawiki else "",
+                )
 
 
 def extract_mediawiki(conn: Connection) -> None:
@@ -31,7 +41,9 @@ def extract_mediawiki(conn: Connection) -> None:
         mediawiki_path = path
         break
     php_path = mediawiki_path / "includes" / "languages" / "data" / "Names.php"
-    extract_data_from_php_file(conn, php_path, "echo json_encode(Names::$names);", None)
+    extract_data_from_php_file(
+        conn, php_path, "echo json_encode(Names::$names);", None, True
+    )
 
 
 def extract_mediawiki_cldr(conn: Connection) -> None:
@@ -55,4 +67,5 @@ def extract_mediawiki_cldr(conn: Connection) -> None:
             }
             """,
             code_for_name,
+            False,
         )
