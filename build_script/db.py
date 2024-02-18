@@ -40,7 +40,8 @@ def insert_data(
         ON CONFLICT(lang_code, lang_name, in_lang) DO UPDATE SET
         lang_code=excluded.lang_code,
         lang_name=excluded.lang_name,
-        in_lang=excluded.in_lang
+        in_lang=excluded.in_lang,
+        alt=excluded.alt
         """,
         (lang_code, lang_name, in_lang, alt),
     )
