@@ -91,14 +91,17 @@ def get_all_names(
     """
     conn = sqlite3.connect(str(DB_PATH))
     sql_query = "SELECT lang_code, lang_name FROM langcodes"
+    query_vars = []
     if only_defined:
         sql_query += " WHERE alt = 'mediawiki'"
     elif in_language == "":
         sql_query += " WHERE in_lang = lang_code"
-    sql_query += " GROUP BY lang_code"
+    else:
+        sql_query += " WHERE in_lang = ?"
+        query_vars.append(in_language)
 
-    for lang_code, lang_name in conn.execute(sql_query):
-        if in_language != "":
+    for lang_code, lang_name in conn.execute(sql_query, tuple(query_vars)):
+        if in_language != "" and only_defined:
             lang_name = code_to_name(lang_code, in_language)
         yield lang_code, lang_name
     conn.close()
