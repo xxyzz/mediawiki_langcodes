@@ -21,7 +21,12 @@ def init_db(db_path: Path) -> sqlite3.Connection:
 
 
 def create_index(conn: sqlite3.Connection) -> None:
-    conn.execute("CREATE INDEX lang_name_index ON langcodes (lang_name, in_lang)")
+    conn.executescript(
+        """
+        CREATE INDEX lang_name_index ON langcodes (lang_name, in_lang);
+        CREATE INDEX alt_index ON langcodes (alt);
+        """
+    )
 
 
 def insert_data(
