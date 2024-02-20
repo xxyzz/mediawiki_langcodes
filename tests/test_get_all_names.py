@@ -13,6 +13,9 @@ class TestAllNames(TestCase):
         self.assertGreater(len(names), 0)
 
     def test_mediawiki_defined(self) -> None:
-        autonym_codes = [lang_code for lang_code, _ in get_all_names(only_defined=True)]
+        autonym_codes = {lang_code for lang_code, _ in get_all_names(only_defined=True)}
         fr_codes = [lang_code for lang_code, _ in get_all_names("fr", True)]
-        self.assertEqual(autonym_codes, fr_codes)
+        fr_code_set = set(fr_codes)
+        self.assertEqual(len(fr_code_set), len(fr_codes))
+        self.assertEqual(len(fr_code_set), len(autonym_codes))
+        self.assertEqual(autonym_codes, fr_code_set)

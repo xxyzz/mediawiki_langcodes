@@ -54,4 +54,4 @@ def insert_data(
     # https://www.sqlite.org/datatype3.html#collation
     for (sqlite_lower_name,) in conn.execute("SELECT lower(?)", (lang_name,)):
         if sqlite_lower_name != lang_name.lower():
-            insert_data(conn, lang_code, lang_name.lower(), in_lang, alt)
+            insert_data(conn, lang_code, lang_name.lower(), in_lang, alt + "_lower")

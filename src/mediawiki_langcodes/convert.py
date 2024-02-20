@@ -83,7 +83,7 @@ def name_to_code(
     conn.close()
     if in_language != "" and lang_code == "" and not single_query:
         lang_code = name_to_code(lang_name, single_query=True)
-    return lang_code
+    return lang_code.lower()
 
 
 def get_all_names(
@@ -107,5 +107,5 @@ def get_all_names(
     for lang_code, lang_name in conn.execute(sql_query, tuple(query_vars)):
         if in_language != "" and only_defined:
             lang_name = code_to_name(lang_code, in_language)
-        yield lang_code, lang_name
+        yield lang_code.lower(), lang_name
     conn.close()
