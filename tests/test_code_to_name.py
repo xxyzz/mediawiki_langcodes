@@ -9,3 +9,9 @@ class TestCodeToName(TestCase):
 
     def test_in_language(self) -> None:
         self.assertEqual(code_to_name("en", "zh"), "英语")
+
+    def test_mediawiki_name(self):
+        """
+        'Qafár af' is defined in MediaWiki code, 'Qafar' is added from cldr
+        """
+        self.assertEqual(code_to_name("aa"), "Qafár af")

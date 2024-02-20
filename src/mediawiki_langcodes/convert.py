@@ -20,36 +20,40 @@ def code_to_name(lang_code: str, in_language: str = "") -> str:
     if in_language == "":
         in_language = lang_code
 
+    # prefer to use name defined in MediaWiki
+    in_lang_query = """
+    SELECT lang_name FROM langcodes
+    WHERE lang_code = :lang_code AND in_lang = :in_lang AND alt = 'mediawiki'
+    UNION ALL
+    SELECT lang_name FROM langcodes
+    WHERE lang_code = :lang_code AND in_lang = :in_lang AND alt = ''
+    LIMIT 1
+    """
+
     conn = sqlite3.connect(str(DB_PATH))
     lang_name = ""
     for (result_name,) in conn.execute(
-        """
-        SELECT lang_name FROM langcodes
-        WHERE lang_code = ? AND in_lang = ? AND alt IN ('mediawiki', '')
-        LIMIT 1
-        """,
-        (lang_code, in_language),
+        in_lang_query, {"lang_code": lang_code, "in_lang": in_language}
     ):
         lang_name = result_name
     if lang_name == "" and "-" in in_language:
         # remove script and territory code
         for (result_name,) in conn.execute(
-            """
-            SELECT lang_name FROM langcodes
-            WHERE lang_code = ? AND in_lang = ? AND alt IN ('mediawiki', '')
-            LIMIT 1
-            """,
-            (lang_code, in_language.split("-", 1)[0]),
+            in_lang_query,
+            {"lang_code": lang_code, "in_lang": in_language.split("-", 1)[0]},
         ):
             lang_name = result_name
     if lang_name == "":
         for (result_name,) in conn.execute(
             """
             SELECT lang_name FROM langcodes
-            WHERE lang_code = ? AND alt IN ('mediawiki', '')
+            WHERE lang_code = :lang_code AND alt = 'mediawiki'
+            UNION ALL
+            SELECT lang_name FROM langcodes
+            WHERE lang_code = :lang_code AND alt = ''
             LIMIT 1
             """,
-            (lang_code,),
+            {"lang_code": lang_code},
         ):
             lang_name = result_name
 
