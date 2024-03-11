@@ -20,7 +20,7 @@ jobs:
           workflow: test.yml
           commit: ${{ github.sha }}
 
-      - uses: softprops/action-gh-release@v1
+      - uses: softprops/action-gh-release@v2
         with:
           prerelease: ${{ endsWith(github.ref_name, 'dev') }}
           files: dist/*
