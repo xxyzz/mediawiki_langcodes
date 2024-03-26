@@ -28,7 +28,7 @@ jobs:
 
       - name: Build and install package
         run: |
-          python -m pip install -U pip build
+          python -m pip install -U pip build requests
           make
           python -m pip install dist/*.whl
 

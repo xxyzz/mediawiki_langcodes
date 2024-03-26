@@ -35,23 +35,35 @@ def insert_data(
     lang_name: str,
     in_lang: str,
     alt: str = "",
+    update_row: bool = False,
 ) -> None:
     lang_code = lang_code.replace("_", "-")
     in_lang = in_lang.replace("_", "-")
-    conn.execute(
-        """
-        INSERT INTO langcodes
-        (lang_code, lang_name, in_lang, alt) VALUES(?, ?, ?, ?)
-        ON CONFLICT(lang_code, lang_name, in_lang) DO UPDATE SET
-        lang_code=excluded.lang_code,
-        lang_name=excluded.lang_name,
-        in_lang=excluded.in_lang,
-        alt=excluded.alt
-        """,
-        (lang_code, lang_name, in_lang, alt),
-    )
+    if update_row:
+        conn.execute(
+            """
+            INSERT INTO langcodes
+            (lang_code, lang_name, in_lang, alt) VALUES(?, ?, ?, ?)
+            ON CONFLICT(lang_code, lang_name, in_lang) DO UPDATE SET
+            lang_code=excluded.lang_code,
+            lang_name=excluded.lang_name,
+            in_lang=excluded.in_lang,
+            alt=excluded.alt
+            """,
+            (lang_code, lang_name, in_lang, alt),
+        )
+    else:
+        conn.execute(
+            """
+            INSERT OR IGNORE INTO langcodes
+            (lang_code, lang_name, in_lang, alt) VALUES(?, ?, ?, ?)
+            """,
+            (lang_code, lang_name, in_lang, alt),
+        )
     # SQLite NOCASE only converts ASCII letters
     # https://www.sqlite.org/datatype3.html#collation
     for (sqlite_lower_name,) in conn.execute("SELECT lower(?)", (lang_name,)):
         if sqlite_lower_name != lang_name.lower():
-            insert_data(conn, lang_code, lang_name.lower(), in_lang, alt + "_lower")
+            insert_data(
+                conn, lang_code, lang_name.lower(), in_lang, alt + "_lower", update_row
+            )

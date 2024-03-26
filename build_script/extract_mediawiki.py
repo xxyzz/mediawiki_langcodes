@@ -32,6 +32,7 @@ def extract_data_from_php_file(
                     lang_name,
                     in_lang or lang_code,
                     "mediawiki" if from_mediawiki else "",
+                    from_mediawiki,
                 )
 
 
