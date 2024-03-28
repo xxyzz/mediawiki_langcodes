@@ -23,7 +23,7 @@ def add_de_wiktionary_languages(conn: Connection) -> None:
             for index, td_tag in enumerate(tr_tag.iterfind("td")):
                 if index == 1:
                     lang_code = "".join(td_tag.itertext()).strip("{}")
-                elif index == 2:
+                elif index in (0, 2):
                     lang_name_str = "".join(td_tag.itertext()).strip()
                     for lang_name in lang_name_str.split("/"):
                         insert_data(conn, lang_code, lang_name, WIKTIONARY_LANG_CODE)
