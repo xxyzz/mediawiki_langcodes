@@ -35,14 +35,10 @@ def add_languages_with_variant(conn: Connection, lang_variant: str) -> None:
                     # some language names are not translated, don't add again
                     insert_data(conn, lang_code, td_text, WIKTIONARY_LANG_CODE)
                 elif index == 4:
-                    for other_index, other_name in enumerate(td_text.split(", "), 1):
+                    for other_name in td_text.split(", "):
                         if not lang_name_exists(conn, other_name):
                             insert_data(
-                                conn,
-                                lang_code,
-                                other_name,
-                                WIKTIONARY_LANG_CODE,
-                                f"wiktionary{other_index}",
+                                conn, lang_code, other_name, WIKTIONARY_LANG_CODE
                             )
 
 
@@ -53,14 +49,8 @@ def add_zh_wiktionary_languages(conn: Connection) -> None:
         add_languages_with_variant(conn, lang_variant)
 
     for lang_code, lang_names in EXTRA_LANG_NAMES.items():
-        for name_index, lang_name in enumerate(lang_names):
-            insert_data(
-                conn,
-                lang_code,
-                lang_name,
-                WIKTIONARY_LANG_CODE,
-                "" if name_index == 0 else f"wiktionary{name_index}",
-            )
+        for lang_name in lang_names:
+            insert_data(conn, lang_code, lang_name, WIKTIONARY_LANG_CODE)
 
 
 EXTRA_LANG_NAMES = {
