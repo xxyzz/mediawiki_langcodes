@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mediawiki_langcodes"
-version = "0.2.2"
+version = "0.2.3"
 authors = [
     {name = "xxyzz"}
 ]
@@ -28,13 +28,10 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "mypy",
-    "ruff",
     "requests",
+    "ruff",
     "types-requests",
 ]
-
-[tool.setuptools]
-zip-safe = false
 
 [tool.setuptools.package-data]
 mediawiki_langcodes = [
@@ -54,6 +51,3 @@ select = [
     "I",  # isort
     "W",  # pycodestyle warning
 ]
-
-[tool.typos]
-type.json.check-file = false

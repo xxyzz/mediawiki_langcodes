@@ -58,7 +58,12 @@ def insert_data(
             INSERT OR IGNORE INTO langcodes
             (lang_code, lang_name, in_lang, alt) VALUES(?, ?, ?, ?)
             """,
-            (lang_code, lang_name, in_lang, alt),
+            (
+                lang_code,
+                lang_name,
+                in_lang,
+                alt if code_in_lang_exists(conn, lang_code, in_lang) else "",
+            ),
         )
     # SQLite NOCASE only converts ASCII letters
     # https://www.sqlite.org/datatype3.html#collation
@@ -67,3 +72,20 @@ def insert_data(
             insert_data(
                 conn, lang_code, lang_name.lower(), in_lang, alt + "_lower", update_row
             )
+
+
+def code_in_lang_exists(conn: sqlite3.Connection, lang_code: str, in_lang: str) -> bool:
+    for _ in conn.execute(
+        "SELECT lang_code FROM langcodes WHERE lang_code = ? AND in_lang = ? LIMIT 1",
+        (lang_code, in_lang),
+    ):
+        return True
+    return False
+
+
+def lang_name_exists(conn: sqlite3.Connection, lang_name: str) -> bool:
+    for _ in conn.execute(
+        "SELECT lang_name FROM langcodes WHERE lang_name = ? LIMIT 1", (lang_name,)
+    ):
+        return True
+    return False
