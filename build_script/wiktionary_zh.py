@@ -35,7 +35,7 @@ def add_languages_with_variant(conn: Connection, lang_variant: str) -> None:
                     # some language names are not translated, don't add again
                     insert_data(conn, lang_code, td_text, WIKTIONARY_LANG_CODE)
                 elif index == 4:
-                    for other_name in td_text.split(", "):
+                    for other_name in filter(None, td_text.split(", ")):
                         if not lang_name_exists(conn, other_name):
                             insert_data(
                                 conn, lang_code, other_name, WIKTIONARY_LANG_CODE

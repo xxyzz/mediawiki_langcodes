@@ -1,12 +1,13 @@
 from sqlite3 import Connection
 
+from db import insert_data
+
 WIKTIONARY_LANG_CODE = "de"
 
 
 def add_de_wiktionary_languages(conn: Connection) -> None:
     from xml.etree import ElementTree
 
-    from db import insert_data
     from mediawiki_api import mediawiki_api_request
 
     # https://de.wiktionary.org/wiki/Hilfe:Sprachkürzel
@@ -20,18 +21,25 @@ def add_de_wiktionary_languages(conn: Connection) -> None:
     for table in root.iterfind(".//table[@class='wikitable']"):
         for tr_tag in table.iterfind(".//tr"):
             lang_code = ""
+            first_td_text = ""
             for index, td_tag in enumerate(tr_tag.iterfind("td")):
-                if index == 1:
-                    lang_code = "".join(td_tag.itertext()).strip("{}")
-                elif index in (0, 2):
-                    lang_name_str = "".join(td_tag.itertext()).strip()
-                    for lang_name in lang_name_str.split("/"):
-                        insert_data(
-                            conn, lang_code, lang_name.strip(), WIKTIONARY_LANG_CODE
-                        )
+                td_text = "".join(td_tag.itertext()).strip()
+                match index:
+                    case 0:
+                        first_td_text = td_text
+                    case 1:
+                        lang_code = td_text.strip("{}")
+                    case 2:
+                        insert_td_lang_data(conn, lang_code, td_text)
+            insert_td_lang_data(conn, lang_code, first_td_text)
 
     for lang_code, lang_name in EXTRA_LANG_NAMES:
         insert_data(conn, lang_code, lang_name, WIKTIONARY_LANG_CODE)
+
+
+def insert_td_lang_data(conn: Connection, lang_code: str, td_text: str) -> None:
+    for lang_name in filter(None, td_text.split("/")):
+        insert_data(conn, lang_code, lang_name.strip(), WIKTIONARY_LANG_CODE)
 
 
 EXTRA_LANG_NAMES = (
