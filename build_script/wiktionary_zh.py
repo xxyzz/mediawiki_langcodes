@@ -45,7 +45,7 @@ def add_languages_with_variant(conn: Connection, lang_variant: str) -> None:
 def add_zh_wiktionary_languages(conn: Connection) -> None:
     from db import insert_data
 
-    for lang_variant in ("zh-hant", "zh-hans"):
+    for lang_variant in ("", "zh-hant", "zh-hans"):
         add_languages_with_variant(conn, lang_variant)
 
     for lang_code, lang_names in EXTRA_LANG_NAMES.items():
@@ -69,6 +69,7 @@ EXTRA_LANG_NAMES = {
     "he": ["希伯来語"],
     "hr": ["克罗地亚语"],
     "hrx": ["亨斯里克語"],
+    "ia": ["國際語", "国际语"],
     "id": ["印度尼西亞語", "印度尼西亚语"],
     "it": ["義大利語"],
     "ja": ["日文"],
@@ -104,5 +105,6 @@ EXTRA_LANG_NAMES = {
     "xno": ["盎格鲁-诺曼语"],
     "yi": ["意第绪語"],
     "za": ["壮語"],
+    "zgh": ["標準摩洛哥柏柏語"],
     "zh": ["中文"],
 }
