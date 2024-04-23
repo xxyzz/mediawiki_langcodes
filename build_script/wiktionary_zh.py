@@ -21,6 +21,7 @@ def add_languages_with_variant(conn: Connection, lang_variant: str) -> None:
         ("parse", "text"),
     )
     root = ElementTree.fromstring(page_html)
+    ignored_lang_codes = set()
     for table in root.iterfind(".//table"):
         for tr_tag in table.iterfind(".//tr"):
             lang_code = ""
@@ -30,16 +31,21 @@ def add_languages_with_variant(conn: Connection, lang_variant: str) -> None:
                     continue
                 if index == 0:
                     lang_code = td_text
-                elif index == 1 and not lang_name_exists(conn, td_text):
+                    if lang_code in ignored_lang_codes:
+                        break
+                elif index == 1:
                     # Chinese Wiktionary's Lua code are copied from English Wiktionary
                     # some language names are not translated, don't add again
+                    if lang_variant != "" and lang_name_exists(conn, td_text):
+                        ignored_lang_codes.add(lang_code)
+                        break
                     insert_data(conn, lang_code, td_text, WIKTIONARY_LANG_CODE)
-                elif index == 4:
-                    for other_name in filter(None, td_text.split(", ")):
-                        if not lang_name_exists(conn, other_name):
-                            insert_data(
-                                conn, lang_code, other_name, WIKTIONARY_LANG_CODE
-                            )
+                # elif index == 4:  # not translated
+                #     for other_name in filter(None, td_text.split(", ")):
+                #         if not lang_name_exists(conn, other_name):
+                #             insert_data(
+                #                 conn, lang_code, other_name, WIKTIONARY_LANG_CODE
+                #             )
 
 
 def add_zh_wiktionary_languages(conn: Connection) -> None:
