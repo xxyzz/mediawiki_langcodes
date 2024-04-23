@@ -27,6 +27,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    "lxml",
     "mypy",
     "requests",
     "ruff",
@@ -43,6 +44,10 @@ mediawiki_langcodes = [
 check_untyped_defs = true
 strict = true
 exclude = ["build"]
+
+[[tool.mypy.overrides]]
+module = "lxml.*"
+ignore_missing_imports = true
 
 [tool.ruff.lint]
 select = [

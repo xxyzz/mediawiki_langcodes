@@ -5,6 +5,7 @@ from extract_cldr import extract_cldr
 from extract_mediawiki import extract_mediawiki, extract_mediawiki_cldr
 from wiktionary_de import add_de_wiktionary_languages
 from wiktionary_en import add_en_wiktionary_languages
+from wiktionary_es import add_es_wiktionary_languages
 from wiktionary_zh import add_zh_wiktionary_languages
 
 
@@ -16,6 +17,7 @@ def main() -> None:
     extract_mediawiki(conn)
     add_en_wiktionary_languages(conn)
     add_de_wiktionary_languages(conn)
+    add_es_wiktionary_languages(conn)
     add_zh_wiktionary_languages(conn)
     create_index(conn)
     conn.commit()
