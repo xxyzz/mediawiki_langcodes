@@ -1,3 +1,4 @@
+from logging import Logger
 from sqlite3 import Connection
 
 from db import insert_data
@@ -5,7 +6,7 @@ from db import insert_data
 WIKTIONARY_LANG_CODE = "es"
 
 
-def add_es_wiktionary_languages(conn: Connection) -> None:
+def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
     from lxml import etree
     from mediawiki_api import mediawiki_api_request
 
@@ -16,6 +17,7 @@ def add_es_wiktionary_languages(conn: Connection) -> None:
         ("parse", "text"),
     )
     root = etree.fromstring(page_html)
+    count = 0
     for header_tag in root.xpath(".//h3 | .//h4"):
         header_text = header_tag.xpath("string()")
         if header_text.startswith(
@@ -35,6 +37,7 @@ def add_es_wiktionary_languages(conn: Connection) -> None:
                             lang_code = td_text
                         case 1:
                             insert_data(conn, lang_code, td_text, WIKTIONARY_LANG_CODE)
+                            count += 1
                         case 4:
                             for lang_name in td_text.split(", "):
                                 lang_name = lang_name.strip()
@@ -42,3 +45,5 @@ def add_es_wiktionary_languages(conn: Connection) -> None:
                                     insert_data(
                                         conn, lang_code, lang_name, WIKTIONARY_LANG_CODE
                                     )
+                                    count += 1
+    logger.info(f"Added {count} data from Spanish Wiktionary")

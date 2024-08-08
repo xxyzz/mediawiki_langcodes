@@ -1,3 +1,4 @@
+from logging import Logger
 from sqlite3 import Connection
 
 from db import insert_data
@@ -5,7 +6,7 @@ from db import insert_data
 WIKTIONARY_LANG_CODE = "de"
 
 
-def add_de_wiktionary_languages(conn: Connection) -> None:
+def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
     from xml.etree import ElementTree
 
     from mediawiki_api import mediawiki_api_request
@@ -17,6 +18,7 @@ def add_de_wiktionary_languages(conn: Connection) -> None:
         ("parse", "text"),
     )
     root = ElementTree.fromstring(page_html)
+    count = 0
     # use class name to filter first letter index table
     for table in root.iterfind(".//table[@class='wikitable']"):
         for tr_tag in table.iterfind(".//tr"):
@@ -31,10 +33,12 @@ def add_de_wiktionary_languages(conn: Connection) -> None:
                         lang_code = td_text.strip("{}")
                     case 2:
                         insert_td_lang_data(conn, lang_code, td_text)
+                        count += 1
             insert_td_lang_data(conn, lang_code, first_td_text)
 
     for lang_code, lang_name in EXTRA_LANG_NAMES:
         insert_data(conn, lang_code, lang_name, WIKTIONARY_LANG_CODE)
+    logger.info(f"Added {count} data from German Wiktionary")
 
 
 def insert_td_lang_data(conn: Connection, lang_code: str, td_text: str) -> None:

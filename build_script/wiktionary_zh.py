@@ -1,9 +1,12 @@
+from logging import Logger
 from sqlite3 import Connection
 
 WIKTIONARY_LANG_CODE = "zh"
 
 
-def add_languages_with_variant(conn: Connection, lang_variant: str) -> None:
+def add_languages_with_variant(
+    conn: Connection, lang_variant: str, logger: Logger
+) -> None:
     from xml.etree import ElementTree
 
     from db import insert_data, lang_name_exists
@@ -22,6 +25,7 @@ def add_languages_with_variant(conn: Connection, lang_variant: str) -> None:
     )
     root = ElementTree.fromstring(page_html)
     ignored_lang_codes = set()
+    count = 0
     for table in root.iterfind(".//table"):
         for tr_tag in table.iterfind(".//tr"):
             lang_code = ""
@@ -40,19 +44,21 @@ def add_languages_with_variant(conn: Connection, lang_variant: str) -> None:
                         ignored_lang_codes.add(lang_code)
                         break
                     insert_data(conn, lang_code, td_text, WIKTIONARY_LANG_CODE)
+                    count += 1
                 # elif index == 4:  # not translated
                 #     for other_name in filter(None, td_text.split(", ")):
                 #         if not lang_name_exists(conn, other_name):
                 #             insert_data(
                 #                 conn, lang_code, other_name, WIKTIONARY_LANG_CODE
                 #             )
+    logger.info(f"Added {count} data from Chinese Wiktionary")
 
 
-def add_zh_wiktionary_languages(conn: Connection) -> None:
+def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
     from db import insert_data
 
     for lang_variant in ("", "zh-hant", "zh-hans"):
-        add_languages_with_variant(conn, lang_variant)
+        add_languages_with_variant(conn, lang_variant, logger)
 
     for lang_code, lang_names in EXTRA_LANG_NAMES.items():
         for lang_name in lang_names:

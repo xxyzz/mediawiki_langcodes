@@ -1,9 +1,10 @@
+from logging import Logger
 from sqlite3 import Connection
 
 WIKTIONARY_LANG_CODE = "en"
 
 
-def add_en_wiktionary_languages(conn: Connection) -> None:
+def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
     from xml.etree import ElementTree
 
     from db import insert_data
@@ -16,6 +17,7 @@ def add_en_wiktionary_languages(conn: Connection) -> None:
         ("parse", "text"),
     )
     root = ElementTree.fromstring(page_html)
+    count = 0
     for table in root.iterfind(".//table"):
         for tr_tag in table.iterfind(".//tr"):
             lang_code = ""
@@ -27,6 +29,9 @@ def add_en_wiktionary_languages(conn: Connection) -> None:
                     lang_code = td_text
                 elif index == 1:  # canonical name
                     insert_data(conn, lang_code, td_text, WIKTIONARY_LANG_CODE)
+                    count += 1
                 elif index == 4:
                     for other_name in filter(None, td_text.split(", ")):
                         insert_data(conn, lang_code, other_name, WIKTIONARY_LANG_CODE)
+                        count += 1
+    logger.info(f"Added {count} data from English Wiktionary")
