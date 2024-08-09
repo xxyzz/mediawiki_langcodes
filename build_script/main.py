@@ -4,7 +4,7 @@ def main() -> None:
     from importlib.resources import files
     from pathlib import Path
 
-    from db import create_index, init_db, count_rows
+    from db import count_rows, create_index, init_db
     from extract_cldr import extract_cldr
     from extract_mediawiki import extract_mediawiki, extract_mediawiki_cldr
 
