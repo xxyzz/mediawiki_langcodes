@@ -27,7 +27,9 @@ def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
             )
         ):
             continue
-        for table_tag in header_tag.xpath("following-sibling::table[1]"):
+        for table_tag in header_tag.xpath(
+            "parent::*/following-sibling::table[1]/tbody"
+        ):
             for tr_tag in table_tag.iterfind(".//tr"):
                 lang_code = ""
                 for index, td_tag in enumerate(tr_tag.iterfind("td")):

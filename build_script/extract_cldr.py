@@ -1,14 +1,16 @@
 import xml.etree.ElementTree as ET
+from logging import Logger
 from pathlib import Path
 from sqlite3 import Connection
 
 from db import insert_data
 
 
-def extract_cldr(conn: Connection) -> None:
+def extract_cldr(conn: Connection, logger: Logger) -> None:
     for path in Path("build").glob("cldr-*"):
         cldr_path = path
         break
+    count = 0
     for xml_path in (cldr_path / "common" / "main").iterdir():
         tree = ET.parse(xml_path)
         root = tree.getroot()
@@ -36,3 +38,5 @@ def extract_cldr(conn: Connection) -> None:
                 in_lang,
                 lang_node.get("alt", ""),
             )
+            count += 1
+    logger.info(f"Added {count} data from cldr")

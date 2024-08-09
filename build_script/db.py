@@ -70,3 +70,9 @@ def lang_name_exists(conn: sqlite3.Connection, lang_name: str) -> bool:
     ):
         return True
     return False
+
+
+def count_rows(conn: sqlite3.Connection) -> str:
+    for (count,) in conn.execute("SELECT count(*) FROM langcodes"):
+        return count
+    return 0
