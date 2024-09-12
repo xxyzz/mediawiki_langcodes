@@ -27,5 +27,12 @@ def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
                     lang_name = td_text
                 elif index == 1:
                     insert_data(conn, td_text, lang_name, WIKTIONARY_LANG_CODE)
+                    if lang_name.startswith("język "):
+                        insert_data(
+                            conn,
+                            td_text,
+                            lang_name.removeprefix("język "),
+                            WIKTIONARY_LANG_CODE,
+                        )
                     count += 1
     logger.info(f"Added {count} data from Polish Wiktionary")

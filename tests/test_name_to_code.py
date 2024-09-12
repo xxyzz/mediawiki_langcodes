@@ -21,6 +21,7 @@ class TestNameToCode(TestCase):
 
     def test_pl_edition_data(self) -> None:
         self.assertEqual(name_to_code("język chiński standardowy", "pl"), "zh")
+        self.assertEqual(name_to_code("chiński standardowy", "pl"), "zh")
 
     def test_es_edition_data(self) -> None:
         self.assertEqual(name_to_code("afar", "es"), "aa")
