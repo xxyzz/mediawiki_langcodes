@@ -16,10 +16,10 @@ def main() -> None:
     extract_cldr(conn, logger)
     extract_mediawiki_cldr(conn, logger)
     extract_mediawiki(conn, logger)
+    create_index(conn)
     for code_path in files("main").glob("wiktionary_*"):  # type:ignore
         module = importlib.import_module(code_path.stem)
         module.add_wiktionary_languages(conn, logger)
-    create_index(conn)
     conn.commit()
     logger.info(f"Total rows: {count_rows(conn)}")
     conn.close()
