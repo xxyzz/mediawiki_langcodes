@@ -1,13 +1,7 @@
 import sqlite3
-import sys
 from collections.abc import Iterator
+from importlib.resources import files
 from typing import Tuple
-
-if sys.version_info < (3, 10):
-    from importlib_resources import files
-else:
-    from importlib.resources import files
-
 
 DB_PATH = files("mediawiki_langcodes") / "langcodes.db"
 
