@@ -5,9 +5,8 @@ WIKTIONARY_LANG_CODE = "pl"
 
 
 def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
-    from xml.etree import ElementTree
-
     from db import insert_data
+    from lxml import etree
     from mediawiki_api import mediawiki_api_request
 
     # https://pl.wiktionary.org/wiki/Wikisłownik:Kody_języków
@@ -16,7 +15,7 @@ def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
         {"action": "parse", "page": "Wikisłownik:Kody_języków", "prop": "text"},
         ("parse", "text"),
     )
-    root = ElementTree.fromstring(page_html)
+    root = etree.fromstring(page_html, etree.HTMLParser())
     count = 0
     for table in root.iterfind(".//tbody"):
         for tr_tag in table.iterfind(".//tr"):

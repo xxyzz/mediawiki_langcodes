@@ -5,18 +5,22 @@ WIKTIONARY_LANG_CODE = "en"
 
 
 def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
-    from xml.etree import ElementTree
-
     from db import insert_data
+    from lxml import etree
     from mediawiki_api import mediawiki_api_request
 
     # https://en.wiktionary.org/wiki/Wiktionary:List_of_languages
     page_html = mediawiki_api_request(
         WIKTIONARY_LANG_CODE,
-        {"action": "parse", "page": "Wiktionary:List_of_languages", "prop": "text"},
+        {
+            "action": "parse",
+            "page": "Wiktionary:List_of_languages",
+            "prop": "text",
+            "disablelimitreport": "1",
+        },
         ("parse", "text"),
     )
-    root = ElementTree.fromstring(page_html)
+    root = etree.fromstring(page_html, etree.HTMLParser())
     count = 0
     for table in root.iterfind(".//table"):
         for tr_tag in table.iterfind(".//tr"):

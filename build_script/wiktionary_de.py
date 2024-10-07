@@ -7,8 +7,7 @@ WIKTIONARY_LANG_CODE = "de"
 
 
 def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
-    from xml.etree import ElementTree
-
+    from lxml import etree
     from mediawiki_api import mediawiki_api_request
 
     # https://de.wiktionary.org/wiki/Hilfe:Sprachkürzel
@@ -17,7 +16,7 @@ def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
         {"action": "parse", "page": "Hilfe:Sprachkürzel", "prop": "text"},
         ("parse", "text"),
     )
-    root = ElementTree.fromstring(page_html)
+    root = etree.fromstring(page_html, etree.HTMLParser())
     count = 0
     # use class name to filter first letter index table
     for table in root.iterfind(".//table[@class='wikitable']"):

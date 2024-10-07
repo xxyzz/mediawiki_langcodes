@@ -16,7 +16,7 @@ def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
         {"action": "parse", "page": "Wikcionario:Códigos de idioma", "prop": "text"},
         ("parse", "text"),
     )
-    root = etree.fromstring(page_html)
+    root = etree.fromstring(page_html, etree.HTMLParser())
     count = 0
     for header_tag in root.xpath(".//h3 | .//h4"):
         header_text = header_tag.xpath("string()")

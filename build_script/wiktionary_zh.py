@@ -7,9 +7,8 @@ WIKTIONARY_LANG_CODE = "zh"
 def add_languages_with_variant(
     conn: Connection, lang_variant: str, logger: Logger
 ) -> None:
-    from xml.etree import ElementTree
-
     from db import insert_data, lang_name_exists
+    from lxml import etree
     from mediawiki_api import mediawiki_api_request
 
     # https://zh.wiktionary.org/wiki/Wiktionary:语言列表
@@ -23,7 +22,7 @@ def add_languages_with_variant(
         },
         ("parse", "text"),
     )
-    root = ElementTree.fromstring(page_html)
+    root = etree.fromstring(page_html, etree.HTMLParser())
     ignored_lang_codes = set()
     count = 0
     for table in root.iterfind(".//table"):
