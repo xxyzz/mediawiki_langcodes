@@ -13,7 +13,12 @@ def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
     # https://de.wiktionary.org/wiki/Hilfe:Sprachkürzel
     page_html = mediawiki_api_request(
         WIKTIONARY_LANG_CODE,
-        {"action": "parse", "page": "Hilfe:Sprachkürzel", "prop": "text"},
+        {
+            "action": "parse",
+            "page": "Hilfe:Sprachkürzel",
+            "prop": "text",
+            "disablelimitreport": "1",
+        },
         ("parse", "text"),
     )
     root = etree.fromstring(page_html, etree.HTMLParser())

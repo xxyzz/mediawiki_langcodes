@@ -17,7 +17,7 @@ def main() -> None:
     extract_mediawiki_cldr(conn, logger)
     extract_mediawiki(conn, logger)
     create_index(conn)
-    for code_path in files("main").glob("wiktionary_*"):  # type:ignore
+    for code_path in files("main").glob("wiktionary_*.py"):  # type:ignore
         module = importlib.import_module(code_path.stem)
         module.add_wiktionary_languages(conn, logger)
     conn.commit()

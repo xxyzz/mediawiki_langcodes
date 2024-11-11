@@ -12,7 +12,12 @@ def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
     # https://pl.wiktionary.org/wiki/Wikisłownik:Kody_języków
     page_html = mediawiki_api_request(
         WIKTIONARY_LANG_CODE,
-        {"action": "parse", "page": "Wikisłownik:Kody_języków", "prop": "text"},
+        {
+            "action": "parse",
+            "page": "Wikisłownik:Kody_języków",
+            "prop": "text",
+            "disablelimitreport": "1",
+        },
         ("parse", "text"),
     )
     root = etree.fromstring(page_html, etree.HTMLParser())

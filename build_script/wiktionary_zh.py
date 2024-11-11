@@ -19,6 +19,7 @@ def add_languages_with_variant(
             "page": "Wiktionary:语言列表",
             "prop": "text",
             "variant": lang_variant,
+            "disablelimitreport": "1",
         },
         ("parse", "text"),
     )
