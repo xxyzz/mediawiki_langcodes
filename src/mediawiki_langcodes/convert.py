@@ -1,11 +1,13 @@
 import sqlite3
 from collections.abc import Iterator
+from functools import lru_cache
 from importlib.resources import files
 from typing import Tuple
 
 DB_PATH = files("mediawiki_langcodes") / "langcodes.db"
 
 
+@lru_cache(maxsize=200)
 def code_to_name(lang_code: str, in_language: str = "") -> str:
     """
     Return autonym if `in_language` is not passed.
@@ -55,9 +57,8 @@ def code_to_name(lang_code: str, in_language: str = "") -> str:
     return lang_name
 
 
-def name_to_code(
-    lang_name: str, in_language: str = "", single_query: bool = False
-) -> str:
+@lru_cache(maxsize=200)
+def name_to_code(lang_name: str, in_language: str = "") -> str:
     """
     Pass the language code of the language name to limit the search scope and reduce
     ambiguity.
@@ -66,17 +67,33 @@ def name_to_code(
     conn = sqlite3.connect(str(DB_PATH))
     lang_code = ""
     lang_name = lang_name.lower()
-    search_sql = "SELECT lang_code FROM langcodes WHERE lang_name = ?"
-    search_values = [lang_name]
-    if in_language != "":
-        search_sql += " AND in_lang = ?"
-        search_values.append(in_language)
-    search_sql += " ORDER BY length(lang_code) LIMIT 1"
-    for (result_code,) in conn.execute(search_sql, tuple(search_values)):
+    if in_language == "":
+        search_sql = """
+        SELECT lang_code FROM langcodes WHERE lang_name = :lang_name
+        ORDER BY length(lang_code) LIMIT 1
+        """
+    else:
+        search_sql = """
+        SELECT * FROM
+        (
+            SELECT lang_code FROM langcodes
+            WHERE lang_name = :lang_name AND in_lang = :in_lang
+            ORDER BY length(lang_code)
+        )
+        UNION ALL
+        SELECT * FROM
+        (
+            SELECT lang_code FROM langcodes WHERE lang_name = :lang_name
+            ORDER BY length(lang_code)
+        )
+        LIMIT 1
+        """
+
+    for (result_code,) in conn.execute(
+        search_sql, {"lang_name": lang_name, "in_lang": in_language}
+    ):
         lang_code = result_code
     conn.close()
-    if in_language != "" and lang_code == "" and not single_query:
-        lang_code = name_to_code(lang_name, single_query=True)
     return lang_code.lower()
 
 

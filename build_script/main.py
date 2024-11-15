@@ -22,6 +22,7 @@ def main() -> None:
         module.add_wiktionary_languages(conn, logger)
     conn.commit()
     logger.info(f"Total rows: {count_rows(conn)}")
+    conn.execute("PRAGMA optimize")
     conn.close()
 
 

@@ -8,7 +8,7 @@ class TestCodeToName(TestCase):
         self.assertEqual(code_to_name("en"), "English")
 
     def test_in_language(self) -> None:
-        self.assertEqual(code_to_name("en", "zh"), "英语")
+        self.assertEqual(code_to_name("en", "zh"), "英文")
 
     def test_mediawiki_name(self) -> None:
         """
