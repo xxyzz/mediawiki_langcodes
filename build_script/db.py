@@ -53,9 +53,9 @@ def insert_data(
         conn.execute(
             """
             INSERT OR IGNORE INTO langcodes
-            (lang_code, lang_name, in_lang, alt) VALUES(?, ?, ?, '')
+            (lang_code, lang_name, in_lang, alt) VALUES(?, ?, ?, ?)
             """,
-            (lang_code, lang_name, in_lang),
+            (lang_code, lang_name, in_lang, alt),
         )
     # SQLite NOCASE only converts ASCII letters
     # https://www.sqlite.org/datatype3.html#collation

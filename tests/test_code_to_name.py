@@ -35,3 +35,6 @@ class TestCodeToName(TestCase):
         conn.close()
         self.assertEqual(empty_lang_code, 0)
         self.assertEqual(empty_lang_name, 0)
+
+    def test_en_wiktionary_default_name(self):
+        self.assertEqual(code_to_name("fr", "en"), "French")

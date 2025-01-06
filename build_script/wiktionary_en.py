@@ -36,6 +36,8 @@ def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
                     count += 1
                 elif index == 4:
                     for other_name in filter(None, td_text.split(", ")):
-                        insert_data(conn, lang_code, other_name, WIKTIONARY_LANG_CODE)
+                        insert_data(
+                            conn, lang_code, other_name, WIKTIONARY_LANG_CODE, "other"
+                        )
                         count += 1
     logger.info(f"Added {count} data from English Wiktionary")
