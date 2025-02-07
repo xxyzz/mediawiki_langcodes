@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mediawiki_langcodes"
-version = "0.2.13"
+version = "0.2.14"
 authors = [
     {name = "xxyzz"}
 ]
@@ -30,6 +30,7 @@ dev = [
     "requests",
     "ruff",
     "types-requests",
+    "build",
 ]
 
 [tool.setuptools.package-data]
