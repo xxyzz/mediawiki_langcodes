@@ -1,6 +1,6 @@
 MEDIAWIKI_TAG := 1.43.0
-MEDIAWIKI_CLDR_BRANCH := REL1_43
-CLDR_TAG := release-46-1
+MEDIAWIKI_CLDR_TAG := 2025.03
+CLDR_TAG := release-47
 
 DB_PATH := src/mediawiki_langcodes/langcodes.db
 
@@ -11,7 +11,7 @@ $(DB_PATH): lang_files
 	python build_script/main.py
 
 lang_files: \
-	build/mediawiki-extensions-cldr-$(MEDIAWIKI_CLDR_BRANCH) \
+	build/mediawiki-extensions-cldr-$(MEDIAWIKI_CLDR_TAG) \
 	build/mediawiki-$(MEDIAWIKI_TAG) \
 	build/cldr-$(CLDR_TAG)
 
@@ -30,8 +30,8 @@ endef
 build/mediawiki-$(MEDIAWIKI_TAG):
 	$(call download_tag,wikimedia/mediawiki,$(MEDIAWIKI_TAG))
 
-build/mediawiki-extensions-cldr-$(MEDIAWIKI_CLDR_BRANCH):
-	$(call download_branch,wikimedia/mediawiki-extensions-cldr,$(MEDIAWIKI_CLDR_BRANCH))
+build/mediawiki-extensions-cldr-$(MEDIAWIKI_CLDR_TAG):
+	$(call download_tag,wikimedia/mediawiki-extensions-cldr,$(MEDIAWIKI_CLDR_TAG))
 
 build/cldr-$(CLDR_TAG):
 	$(call download_tag,unicode-org/cldr,$(CLDR_TAG))
