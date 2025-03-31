@@ -11,10 +11,9 @@ authors = [
 description = "Convert MediaWiki language names and codes"
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "GNU General Public License v3 or later (GPLv3+)"}
+license = "GPL-3.0-or-later"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Operating System :: OS Independent",
 ]
 
