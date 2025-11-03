@@ -1,6 +1,6 @@
-MEDIAWIKI_TAG := 1.44.0
+MEDIAWIKI_TAG := 1.44.2
 MEDIAWIKI_CLDR_TAG := 2025.07
-CLDR_TAG := release-47
+CLDR_TAG := release-48
 
 DB_PATH := src/mediawiki_langcodes/langcodes.db
 
