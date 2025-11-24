@@ -19,12 +19,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-
+      - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
-        with:
-          python-version: '3.13'
-          cache: 'pip'
 
       - name: Build and install package
         run: |
@@ -38,9 +34,3 @@ jobs:
         env:
           PYTHONOPTIMIZE: 1
           PYTHONWARNINGS: default
-
-      - uses: actions/upload-artifact@v5
-        with:
-          if-no-files-found: error
-          name: dist
-          path: dist
