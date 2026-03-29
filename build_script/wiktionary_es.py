@@ -50,7 +50,11 @@ def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
                                 lang_name = lang_name.strip()
                                 if len(lang_name) > 0:
                                     insert_data(
-                                        conn, lang_code, lang_name, WIKTIONARY_LANG_CODE
+                                        conn,
+                                        lang_code,
+                                        lang_name,
+                                        WIKTIONARY_LANG_CODE,
+                                        alt="Otros nombres",
                                     )
                                     count += 1
     logger.info(f"Added {count} data from Spanish Wiktionary")

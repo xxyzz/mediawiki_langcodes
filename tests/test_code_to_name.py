@@ -38,3 +38,6 @@ class TestCodeToName(TestCase):
 
     def test_en_wiktionary_default_name(self) -> None:
         self.assertEqual(code_to_name("fr", "en"), "French")
+
+    def test_fr_in_es(self) -> None:
+        self.assertEqual(code_to_name("fr", "es"), "francés")
