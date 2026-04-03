@@ -41,3 +41,6 @@ class TestCodeToName(TestCase):
 
     def test_fr_in_es(self) -> None:
         self.assertEqual(code_to_name("fr", "es"), "francés")
+
+    def test_pro_in_fr(self) -> None:
+        self.assertEqual(code_to_name("pro", "fr"), "ancien occitan")

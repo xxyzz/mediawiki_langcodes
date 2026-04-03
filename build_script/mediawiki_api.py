@@ -10,7 +10,9 @@ def mediawiki_api_request(
     r = requests.get(
         f"https://{sub_domain}.wiktionary.org/w/api.php",
         params=params,
-        headers={"user-agent": "mediawiki_langcodes"},
+        headers={
+            "user-agent": "mediawiki_langcodes https://github.com/xxyzz/mediawiki_langcodes"
+        },
     )
     data = r.json()
     for key in result_keys:
