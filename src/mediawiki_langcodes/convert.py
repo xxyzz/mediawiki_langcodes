@@ -39,19 +39,6 @@ def code_to_name(lang_code: str, in_language: str = "") -> str:
             {"lang_code": lang_code, "in_lang": in_language.split("-", 1)[0]},
         ):
             lang_name = result_name
-    if lang_name == "":
-        for (result_name,) in conn.execute(
-            """
-            SELECT lang_name FROM langcodes
-            WHERE lang_code = :lang_code AND alt = 'mediawiki'
-            UNION ALL
-            SELECT lang_name FROM langcodes
-            WHERE lang_code = :lang_code AND alt = ''
-            LIMIT 1
-            """,
-            {"lang_code": lang_code},
-        ):
-            lang_name = result_name
 
     conn.close()
     return lang_name
