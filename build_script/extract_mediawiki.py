@@ -46,6 +46,7 @@ def extract_mediawiki(conn: Connection, logger: Logger) -> None:
     for path in Path("build").glob("mediawiki-1.*"):
         mediawiki_path = path
         break
+    # change to "includes/Languages/Data/Names.php" in next release
     php_path = mediawiki_path / "includes" / "languages" / "data" / "Names.php"
     extract_data_from_php_file(
         conn, php_path, "echo json_encode(Names::$names);", None, True, logger
