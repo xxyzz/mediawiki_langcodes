@@ -42,12 +42,11 @@ def extract_data_from_php_file(
 
 
 def extract_mediawiki(conn: Connection, logger: Logger) -> None:
-    # https://github.com/wikimedia/mediawiki/blob/master/includes/languages/data/Names.php
+    # https://github.com/wikimedia/mediawiki/blob/master/includes/Languages/Data/Names.php
     for path in Path("build").glob("mediawiki-1.*"):
         mediawiki_path = path
         break
-    # change to "includes/Languages/Data/Names.php" in next release
-    php_path = mediawiki_path / "includes" / "languages" / "data" / "Names.php"
+    php_path = mediawiki_path / "includes" / "Languages" / "Data" / "Names.php"
     extract_data_from_php_file(
         conn, php_path, "echo json_encode(Names::$names);", None, True, logger
     )
