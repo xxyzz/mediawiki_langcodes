@@ -60,8 +60,8 @@ def extract_mediawiki_cldr(conn: Connection, logger: Logger) -> None:
     for php_path in (repo_path / "LocalNames").iterdir():
         code_for_name = php_path.stem.removeprefix("LocalNames").lower()
         with php_path.open(encoding="utf-8") as f:
-            # skip LocalNames/LocalNamesKk.php that only has `require_once`
-            if "require_once" in f.read():
+            # skip LocalNames/LocalNamesKk.php
+            if "$languageNames" not in f.read():
                 continue
 
         extract_data_from_php_file(
