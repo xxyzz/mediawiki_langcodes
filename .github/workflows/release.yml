@@ -16,7 +16,7 @@ jobs:
       url: https://pypi.org/p/mediawiki_langcodes
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
 
       - name: Build package
         run: |
