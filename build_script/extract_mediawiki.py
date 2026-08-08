@@ -29,6 +29,8 @@ def extract_data_from_php_file(
         if len(subp.stdout) > 0:
             languages = json.loads(subp.stdout)
             for lang_code, lang_name in languages.items():
+                if lang_code == "nrm" and lang_name == "Norman":
+                    continue
                 insert_data(
                     conn,
                     lang_code,
@@ -76,3 +78,6 @@ def extract_mediawiki_cldr(conn: Connection, logger: Logger) -> None:
             False,
             logger,
         )
+
+    for lang_code, lang_name in (("nrf", "Norman"), ("nrm", "Narom")):
+        insert_data(conn, lang_code, lang_name, "en")
