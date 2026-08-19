@@ -45,6 +45,7 @@ def extract_data_page(conn: Connection, page_number: str) -> int:
         ):
             continue
         insert_data(conn, lang_code, lang_name, WIKTIONARY_LANG_CODE)
+        insert_data(conn, lang_code, "ภาษา" + lang_name, WIKTIONARY_LANG_CODE)
         count += 1
         for other_name in other_names.split(","):
             other_name = other_name.strip()
