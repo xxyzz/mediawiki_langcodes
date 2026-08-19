@@ -5,16 +5,30 @@ WIKTIONARY_LANG_CODE = "vi"
 
 
 def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
+    import string
+
+    count = extract_page(conn, None)
+    for index in string.ascii_uppercase:
+        count += extract_page(conn, index)
+    logger.info(f"Added {count} data from Vietnamese Wiktionary")
+
+
+def extract_page(conn: Connection, index: str | None) -> int:
     from db import insert_data
     from lxml import etree
     from mediawiki_api import mediawiki_api_request
 
     # https://vi.wiktionary.org/wiki/Wiktionary:Danh_sách_ngôn_ngữ
+    page_title = (
+        "Wiktionary:Danh_sách_ngôn_ngữ"
+        if index is None
+        else f"Wiktionary:Danh_sách_ngôn_ngữ/{index}"
+    )
     page_html = mediawiki_api_request(
         WIKTIONARY_LANG_CODE,
         {
             "action": "parse",
-            "page": "Wiktionary:Danh_sách_ngôn_ngữ",
+            "page": page_title,
             "prop": "text",
             "disablelimitreport": "1",
         },
@@ -31,8 +45,13 @@ def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
                     lang_code = "".join(td.itertext()).strip()
                 case 1:
                     lang_name = "".join(td.itertext()).strip()
-                    insert_data(conn, lang_code, lang_name, WIKTIONARY_LANG_CODE)
+                    a_node = td.find("a")
+                    if a_node is not None and (
+                        lang_name.startswith("tiếng ")
+                        or not a_node.get("class", "") == "new"
+                    ):
+                        insert_data(conn, lang_code, lang_name, WIKTIONARY_LANG_CODE)
                     count += 1
                 case _:
                     break
-    logger.info(f"Added {count} data from Vietnamese Wiktionary")
+    return count

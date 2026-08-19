@@ -29,3 +29,7 @@ class TestNameToCode(TestCase):
     def test_nrf_nrm(self) -> None:
         self.assertEqual(name_to_code("Norman", "en"), "nrf")
         self.assertEqual(name_to_code("Narom", "en"), "nrm")
+
+    def test_vi_codes(self) -> None:
+        self.assertEqual(name_to_code("Đa ngữ", "vi"), "mul")
+        self.assertEqual(name_to_code("Tiếng Tày", "vi"), "tyz")
