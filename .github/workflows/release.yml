@@ -14,19 +14,27 @@ jobs:
     environment:
       name: pypi
       url: https://pypi.org/p/mediawiki_langcodes
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TELEMETRY: false
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
 
-      - name: Build package
+      - id: get-run-id
         run: |
-          python -m pip install -U pip
-          python -m pip install .[dev]
-          make
+          echo "run_id=$(gh run list \
+            --workflow test.yml \
+            --commit ${{ github.sha }} \
+            --status success \
+            --json databaseId \
+            --jq '.[0].databaseId')" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/download-artifact@v8
+        with:
+          path: dist
+          github-token: ${{ github.token }}
+          run-id: ${{ steps.get-run-id.outputs.run_id }}
 
       - run: gh release create ${{ github.ref_name }} dist/*
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TELEMETRY: false
 
       - uses: pypa/gh-action-pypi-publish@release/v1
