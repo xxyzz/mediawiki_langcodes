@@ -30,6 +30,8 @@ def add_wiktionary_languages(conn: Connection, logger: Logger) -> None:
                 if index == 0:
                     lang_name = td_text
                 elif index == 1:
+                    if td_text == "gr":
+                        td_text = "grc"
                     insert_data(conn, td_text, lang_name, WIKTIONARY_LANG_CODE)
                     if lang_name.startswith("język "):
                         insert_data(

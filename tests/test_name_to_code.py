@@ -36,3 +36,6 @@ class TestNameToCode(TestCase):
 
     def test_th_heading_prefix(self) -> None:
         self.assertEqual(name_to_code("ภาษาไทย", "th"), "th")
+
+    def test_grc_pl(self) -> None:
+        self.assertEqual(name_to_code("język starogrecki", "pl"), "grc")
