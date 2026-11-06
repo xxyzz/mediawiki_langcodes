@@ -24,7 +24,9 @@ def extract_data_from_php_file(
         shutil.copyfileobj(php_f, temp_f)
         temp_f.write(php_code)
         temp_f.flush()
-        subp = subprocess.run(["php", temp_f.name], capture_output=True, text=True)
+        subp = subprocess.run(
+            ["php", temp_f.name], capture_output=True, text=True, check=False
+        )
         count = 0
         if len(subp.stdout) > 0:
             languages = json.loads(subp.stdout)

@@ -46,11 +46,3 @@ exclude = ["build"]
 [[tool.mypy.overrides]]
 module = "lxml.*"
 ignore_missing_imports = true
-
-[tool.ruff.lint]
-select = [
-    "E",  # pycodestyle error
-    "F",  # Pyflakes
-    "I",  # isort
-    "W",  # pycodestyle warning
-]

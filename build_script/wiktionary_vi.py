@@ -48,7 +48,7 @@ def extract_page(conn: Connection, index: str | None) -> int:
                     a_node = td.find("a")
                     if a_node is not None and (
                         lang_name.startswith("tiếng ")
-                        or not a_node.get("class", "") == "new"
+                        or a_node.get("class", "") != "new"
                     ):
                         insert_data(conn, lang_code, lang_name, WIKTIONARY_LANG_CODE)
                     count += 1

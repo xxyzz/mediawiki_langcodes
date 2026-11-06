@@ -2,7 +2,6 @@ import sqlite3
 from collections.abc import Iterator
 from functools import lru_cache
 from importlib.resources import files
-from typing import Tuple
 
 DB_PATH = files("mediawiki_langcodes") / "langcodes.db"
 
@@ -86,7 +85,7 @@ def name_to_code(lang_name: str, in_language: str = "") -> str:
 
 def get_all_names(
     in_language: str = "", only_defined: bool = False
-) -> Iterator[Tuple[str, str]]:
+) -> Iterator[tuple[str, str]]:
     """
     Return tuple of language code and name.
     Only return language codes defined in MediaWiki if `only_defined` is `True`.
