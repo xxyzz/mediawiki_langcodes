@@ -11,7 +11,7 @@ def extract_cldr(conn: Connection, logger: Logger) -> None:
         cldr_path = path
         break
     count = 0
-    for xml_path in (cldr_path / "common" / "main").iterdir():
+    for xml_path in (cldr_path / "common" / "main").glob("*.xml"):
         tree = ET.parse(xml_path)
         root = tree.getroot()
         language_node = root.find("identity/language")

@@ -1,6 +1,7 @@
-MEDIAWIKI_TAG := 1.46.0
+MEDIAWIKI_TAG := 1.46.2
+# LocalNames files removed in mediawiki-extensions-cldr 2026.09 tag
 MEDIAWIKI_CLDR_TAG := 2026.02
-CLDR_TAG := release-48-2
+CLDR_TAG := release-49
 
 DB_PATH := src/mediawiki_langcodes/langcodes.db
 

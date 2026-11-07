@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mediawiki_langcodes"
-version = "0.2.28"
+version = "0.2.29"
 authors = [
     {name = "xxyzz"}
 ]
 description = "Convert MediaWiki language names and codes"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = "GPL-3.0-or-later"
 classifiers = [
     "Programming Language :: Python :: 3",

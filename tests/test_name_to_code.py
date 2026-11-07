@@ -39,3 +39,7 @@ class TestNameToCode(TestCase):
 
     def test_grc_pl(self) -> None:
         self.assertEqual(name_to_code("język starogrecki", "pl"), "grc")
+
+    def test_ru_tly(self) -> None:
+        # from mediawiki-extensions-cldr
+        self.assertEqual(name_to_code("Талышский", "ru"), "tly")
