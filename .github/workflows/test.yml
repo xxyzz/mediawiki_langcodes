@@ -17,9 +17,15 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_TELEMETRY: false
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.1.0
+      - run: |
+          gh extension install github/gh-actions-lock
+          gh actions-lock --verify
 
       - name: Build and install package
         run: |
@@ -34,6 +40,6 @@ jobs:
           PYTHONOPTIMIZE: 1
           PYTHONWARNINGS: default
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v7.0.2
         with:
           path: dist

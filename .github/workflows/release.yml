@@ -18,7 +18,7 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GH_TELEMETRY: false
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
 
       - id: get-run-id
         run: |
@@ -29,7 +29,7 @@ jobs:
             --json databaseId \
             --jq '.[0].databaseId')" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/download-artifact@v8
+      - uses: actions/download-artifact@v8.0.2
         with:
           path: dist
           github-token: ${{ github.token }}
