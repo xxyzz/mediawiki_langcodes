@@ -6,10 +6,10 @@ CLDR_TAG := release-49
 DB_PATH := src/mediawiki_langcodes/langcodes.db
 
 build: $(DB_PATH)
-	python -m build
+	uv build
 
 $(DB_PATH): lang_files
-	python build_script/main.py
+	uv run --locked python build_script/main.py
 
 lang_files: \
 	build/mediawiki-extensions-cldr-$(MEDIAWIKI_CLDR_TAG) \
@@ -44,4 +44,4 @@ clean:
 	rm -rf dist
 
 test:
-	python -m unittest discover -s tests
+	uv run --no-sync python -m unittest discover -s tests

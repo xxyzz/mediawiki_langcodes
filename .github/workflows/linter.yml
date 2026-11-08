@@ -22,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-python@v7.1.0
-      - run: python -m pip install -U pip
-      - run: python -m pip install -e .[dev]
-      - run: python -m mypy .
-      - run: python -m mypy build_script/*.py
-      - run: python -m ruff check --output-format=github .
-      - run: python -m ruff format --check --output-format=github .
+      - run: curl -LsSf https://astral.sh/uv/install.sh | sh
+      - run: uv sync --locked --extra dev
+      - run: uv tool install ruff
+      - run: uv tool run ruff check --output-format=github .
+      - run: uv tool run ruff format --check --output-format=github .
+      - run: uv tool install ty
+      - run: uv tool run ty check --output-format github

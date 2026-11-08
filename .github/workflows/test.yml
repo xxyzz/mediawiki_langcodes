@@ -22,17 +22,16 @@ jobs:
       GH_TELEMETRY: false
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-python@v7.1.0
       - run: |
           gh extension install github/gh-actions-lock
           gh actions-lock --verify
 
       - name: Build and install package
         run: |
-          python -m pip install -U pip
-          python -m pip install .[dev]
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          uv sync --locked --extra dev
           make
-          python -m pip install --force-reinstall dist/*.whl
+          uv pip install dist/*.whl
 
       - name: Run tests
         run: make test

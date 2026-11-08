@@ -25,11 +25,7 @@ Issues = "https://github.com/xxyzz/mediawiki_langcodes/issues"
 [project.optional-dependencies]
 dev = [
     "lxml",
-    "mypy",
     "requests",
-    "ruff",
-    "types-requests",
-    "build",
 ]
 
 [tool.setuptools.package-data]
@@ -38,11 +34,8 @@ mediawiki_langcodes = [
     "py.typed",
 ]
 
-[tool.mypy]
-check_untyped_defs = true
-strict = true
-exclude = ["build"]
+[tool.uv.audit]
+malware-check = true
 
-[[tool.mypy.overrides]]
-module = "lxml.*"
-ignore_missing_imports = true
+[tool.ty.analysis]
+allowed-unresolved-imports = ["lxml.*"]
