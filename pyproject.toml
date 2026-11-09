@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["flit_core"]
+build-backend = "flit_core.buildapi"
 
 [project]
 name = "mediawiki_langcodes"
@@ -26,12 +26,6 @@ Issues = "https://github.com/xxyzz/mediawiki_langcodes/issues"
 dev = [
     "lxml",
     "requests",
-]
-
-[tool.setuptools.package-data]
-mediawiki_langcodes = [
-    "*.db",
-    "py.typed",
 ]
 
 [tool.uv.audit]

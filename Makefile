@@ -1,7 +1,5 @@
 MEDIAWIKI_TAG := 1.46.2
-# LocalNames files removed in mediawiki-extensions-cldr 2026.09 tag
-MEDIAWIKI_CLDR_TAG := 2026.02
-CLDR_TAG := release-49
+MEDIAWIKI_CLDR_TAG := 2026.09
 
 DB_PATH := src/mediawiki_langcodes/langcodes.db
 
@@ -9,12 +7,11 @@ build: $(DB_PATH)
 	uv build
 
 $(DB_PATH): lang_files
-	uv run --locked python build_script/main.py
+	uv run --locked build_script/main.py
 
 lang_files: \
 	build/mediawiki-extensions-cldr-$(MEDIAWIKI_CLDR_TAG) \
-	build/mediawiki-$(MEDIAWIKI_TAG) \
-	build/cldr-$(CLDR_TAG)
+	build/mediawiki-$(MEDIAWIKI_TAG)
 
 define download_tag
 	wget -nv -P build "https://github.com/$1/archive/refs/tags/$2.tar.gz"
@@ -34,9 +31,6 @@ build/mediawiki-$(MEDIAWIKI_TAG):
 build/mediawiki-extensions-cldr-$(MEDIAWIKI_CLDR_TAG):
 	$(call download_tag,wikimedia/mediawiki-extensions-cldr,$(MEDIAWIKI_CLDR_TAG))
 
-build/cldr-$(CLDR_TAG):
-	$(call download_tag,unicode-org/cldr,$(CLDR_TAG))
-
 .PHONY: clean
 clean:
 	rm -rf build
@@ -44,4 +38,4 @@ clean:
 	rm -rf dist
 
 test:
-	uv run --no-sync python -m unittest discover -s tests
+	uv run --no-sync -m unittest discover -s tests

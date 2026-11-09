@@ -31,8 +31,6 @@ def extract_data_from_php_file(
         if len(subp.stdout) > 0:
             languages = json.loads(subp.stdout)
             for lang_code, lang_name in languages.items():
-                if lang_code == "nrm" and lang_name == "Norman":
-                    continue
                 insert_data(
                     conn,
                     lang_code,
@@ -47,39 +45,29 @@ def extract_data_from_php_file(
 
 def extract_mediawiki(conn: Connection, logger: Logger) -> None:
     # https://github.com/wikimedia/mediawiki/blob/master/includes/Languages/Data/Names.php
-    for path in Path("build").glob("mediawiki-1.*"):
-        mediawiki_path = path
-        break
-    php_path = mediawiki_path / "includes" / "Languages" / "Data" / "Names.php"
+    mediawiki_path = next(Path("build").glob("mediawiki-1.*"))
+    php_path = mediawiki_path / "includes/Languages/Data/Names.php"
     extract_data_from_php_file(
         conn, php_path, "echo json_encode(Names::$names);", None, True, logger
     )
 
 
 def extract_mediawiki_cldr(conn: Connection, logger: Logger) -> None:
-    # https://github.com/wikimedia/mediawiki-extensions-cldr/tree/master/LocalNames
-    for path in Path("build").glob("mediawiki-extensions-cldr-*"):
-        repo_path = path
-        break
-    for php_path in (repo_path / "LocalNames").iterdir():
-        code_for_name = php_path.stem.removeprefix("LocalNames").lower()
-        with php_path.open(encoding="utf-8") as f:
-            # skip LocalNames/LocalNamesKk.php
-            if "$languageNames" not in f.read():
-                continue
-
-        extract_data_from_php_file(
-            conn,
-            php_path,
-            """
-            if (isset($languageNames)) {
-                echo json_encode($languageNames);
-            }
-            """,
-            code_for_name,
-            False,
-            logger,
-        )
+    # https://github.com/wikimedia/mediawiki-extensions-cldr/tree/master/i18n/LanguageNames
+    repo_path = next(Path("build").glob("mediawiki-extensions-cldr-*"))
+    for json_path in (repo_path / "i18n/LanguageNames").glob("*.json"):
+        with open(json_path) as f:
+            data = json.load(f)
+            in_lang = json_path.stem
+            count = 0
+            for key, lang_name in data.items():
+                if key.startswith("cldr-language-name-"):
+                    lang_code = key.removeprefix("cldr-language-name-")
+                    if lang_code == "nrm" and lang_name == "Norman":
+                        continue
+                    insert_data(conn, lang_code, lang_name, in_lang)
+                    count += 1
+            logger.info(f"Added {count} data from {json_path}")
 
     for lang_code, lang_name in (("nrf", "Norman"), ("nrm", "Narom")):
         insert_data(conn, lang_code, lang_name, "en")

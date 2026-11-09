@@ -29,6 +29,7 @@ jobs:
       - name: Build and install package
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
+          uv python install
           uv sync --locked --extra dev
           make
           uv pip install dist/*.whl
